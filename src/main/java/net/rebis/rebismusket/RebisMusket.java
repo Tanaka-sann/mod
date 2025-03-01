@@ -48,6 +48,7 @@ public class RebisMusket
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
             event.accept(ModItems.RATION);
+            event.accept(ModItems.PACK_OF_RATIONS);
         }
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.WROUGHT_IRON_INGOT);

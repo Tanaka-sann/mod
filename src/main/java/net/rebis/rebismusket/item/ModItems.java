@@ -37,6 +37,9 @@ public class ModItems {
     public static final RegistryObject<Item> CARTRIDGE = ITEMS.register("cartridge",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> PACK_OF_RATIONS = ITEMS.register("pack_of_rations",
+            () -> new Item(new Item.Properties()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

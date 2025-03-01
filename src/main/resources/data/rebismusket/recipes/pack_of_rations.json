@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "rebismusket:ration"},
+    {"item": "rebismusket:ration"},
+    {"item": "rebismusket:ration"},
+    {"item": "rebismusket:ration"},
+    {"item": "rebismusket:ration"}
+  ],
+  "result": {"item": "rebismusket:pack_of_rations"}
+}
