@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "minecraft:copper_ingot"},
+    {"item": "rebismusket:tin_nugget"}
+  ],
+  "result": {"item": "rebismusket:bronze_premix"}
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "minecraft:iron_sword"},
+    {"item": "rebismusket:musket"}
+  ],
+  "result": {"item": "rebismusket:musket_with_bayonet"}
+}

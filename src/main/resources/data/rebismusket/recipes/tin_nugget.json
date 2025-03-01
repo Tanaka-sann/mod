@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "minecraft:redstone"}
+  ],
+  "result": {"item": "rebismusket:tin_nugget", "count": 3}
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "materials",
+  "experience": 0.35,
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
+  "result": "rebismusket:wrought_iron_ingot"
+}

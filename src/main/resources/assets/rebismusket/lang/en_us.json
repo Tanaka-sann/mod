@@ -1,0 +1,11 @@
+{
+  "item.rebismusket.arquebus" : "Arquebus",
+  "item.rebismusket.musket" : "Musket",
+  "item.rebismusket.musket_with_bayonet" : "Musket With Bayonet",
+  "item.rebismusket.ration": "Ration",
+  "creativetab.rebismusket_tab": "Rebis' Musket",
+  "item.rebismusket.wrought_iron_ingot": "Wrought Iron Ingot",
+  "item.rebismusket.bronze_ingot": "Bronze Ingot",
+  "item.rebismusket.tin_nugget": "Tin Nugget",
+  "item.rebismusket.bronze_premix": "Bronze Premix"
+}
