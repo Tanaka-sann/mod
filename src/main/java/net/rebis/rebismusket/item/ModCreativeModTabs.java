@@ -25,6 +25,7 @@ public class ModCreativeModTabs {
                         output.accept(ModItems.BRONZE_INGOT.get());
                         output.accept(ModItems.TIN_NUGGET.get());
                         output.accept(ModItems.BRONZE_PREMIX.get());
+                        output.accept(ModItems.CARTRIDGE.get());
                     })
                     .build());
 

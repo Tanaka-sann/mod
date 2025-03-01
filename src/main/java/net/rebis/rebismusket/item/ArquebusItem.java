@@ -6,5 +6,6 @@ public class ArquebusItem extends Item {
 
     public ArquebusItem() {
         super(new Item.Properties().defaultDurability(250));
+        boolean loaded = false;
     }
 }

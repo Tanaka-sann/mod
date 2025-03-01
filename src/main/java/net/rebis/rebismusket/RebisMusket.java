@@ -46,24 +46,20 @@ public class RebisMusket
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if(event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+        if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
             event.accept(ModItems.RATION);
         }
-        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.WROUGHT_IRON_INGOT);
-        }
-        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.TIN_NUGGET);
             event.accept(ModItems.BRONZE_INGOT);
         }
-        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(ModItems.TIN_NUGGET);
+        if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+            event.accept(ModItems.CARTRIDGE);
+            event.accept(ModItems.ARQUEBUS);
+            event.accept(ModItems.MUSKET);
+            event.accept(ModItems.MUSKET_WITH_BAYONET);
         }
-    }
-
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
