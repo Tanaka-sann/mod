@@ -13,7 +13,7 @@ public class ModKeyBindings {
 
     @SubscribeEvent
     public static void register(RegisterKeyMappingsEvent event) {
-        reloadKey = new KeyMapping("rebismusket.reload", InputConstants.Type.KEYSYM, InputConstants.KEY_R, "category.rebismusket.firearms");
+        reloadKey = new KeyMapping("Reload Handheld Weapons", InputConstants.Type.KEYSYM, InputConstants.KEY_R, "Rebis' Musket");
         event.register(reloadKey);
     }
 }
