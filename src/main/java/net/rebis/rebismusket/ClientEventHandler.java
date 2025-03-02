@@ -5,6 +5,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ClientEventHandler {
     public static boolean isMousePressed = false;
+    public static boolean isReloading = false;
 
     @SubscribeEvent
     public static void onMouseInput(InputEvent.MouseButton.Post event) {

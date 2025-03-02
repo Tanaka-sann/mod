@@ -27,10 +27,12 @@ public class ArquebusItem extends Item {
             if (ammoCheck(player)) {
                 if (tag.contains("reloadTimer")) {
                     tag.remove("reloadTimer"); // Cancel reload on right-click release
+                    ClientEventHandler.isReloading = false; // Reset reload flag
                     return InteractionResultHolder.pass(held); // Stop further processing
                 } else {
                     tag.putBoolean("loaded", false);
                     tag.putInt("reloadTimer", RELOAD_TIME);
+                    ClientEventHandler.isReloading = true; // Reloading started
                 }
             } else {
                 System.out.println("No ammo ?");
@@ -46,8 +48,9 @@ public class ArquebusItem extends Item {
             if (player.getMainHandItem() == stack || player.getOffhandItem() == stack) {
                 CompoundTag tag = stack.getOrCreateTag();
                 if (tag.contains("reloadTimer")) {
-                    if (!ClientEventHandler.isMousePressed) {
-                        tag.remove("reloadTimer");
+                    if (!ClientEventHandler.isMousePressed && ClientEventHandler.isReloading) { // Mouse released
+                        tag.remove("reloadTimer"); // Cancel reload
+                        ClientEventHandler.isReloading = false; // Reset reload flag
                         System.out.println("reload cancelled");
                     } else {
                         int timer = tag.getInt("reloadTimer");
@@ -59,15 +62,18 @@ public class ArquebusItem extends Item {
                             tag.putBoolean("loaded", true);
                             tag.remove("reloadTimer");
                             player.displayClientMessage(net.minecraft.network.chat.Component.literal("Reloaded !"), true);
-                            useAmmo(player);
+                            ClientEventHandler.isReloading = false; // Reset reload flag
+                            System.out.println("loaded");
                         }
                     }
                 }
             } else {
                 stack.getOrCreateTag().remove("reloadTimer");
+                ClientEventHandler.isReloading = false; // Reset reload flag
             }
         } else {
             stack.getOrCreateTag().remove("reloadTimer");
+            ClientEventHandler.isReloading = false; // Reset reload flag
         }
     }
 
