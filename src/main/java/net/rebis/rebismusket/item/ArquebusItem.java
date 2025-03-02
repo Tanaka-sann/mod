@@ -38,15 +38,18 @@ public class ArquebusItem extends Item {
             if (held.getOrCreateTag().getBoolean("loaded")){
                 held.getOrCreateTag().putBoolean("loaded", false);
                 System.out.println("BANG");
+                return InteractionResultHolder.pass(held);
             } else {
                 if (ammoCheck(player)){
                     System.out.println("Ammo found");
                     if (player.getUseItemRemainingTicks() == 0) { // Check if use hasn't started
                         player.startUsingItem(hand);
                         //start sound and animation here ?
+                        return InteractionResultHolder.pass(held);
                     }
                 } else {
                     System.out.println("No ammo ?");
+                    return InteractionResultHolder.pass(held);
                 }
             }
         }
