@@ -15,7 +15,43 @@ public class ArquebusItem extends Item {
         super(new Item.Properties().defaultDurability(250));
     }
 
-    static int useBuffer = 0;
+    private static final int RELOAD_TIME = 60; // 3 seconds (20 ticks per second)
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+        CompoundTag tag = held.getOrCreateTag();
+
+        if (held.getItem() instanceof ArquebusItem && !tag.getBoolean("loaded")) {
+            if (ammoCheck(player)) {
+                tag.putBoolean("loaded", false); // Start reload
+                tag.putInt("reloadTimer", RELOAD_TIME);
+            } else {
+                System.out.println("No ammo ?");
+            }
+        }
+
+        return InteractionResultHolder.pass(held);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, Level world, net.minecraft.world.entity.Entity entity, int slotId, boolean isSelected) {
+        if (entity instanceof Player) {
+            CompoundTag tag = stack.getOrCreateTag();
+            if (!tag.getBoolean("loaded") && tag.contains("reloadTimer")) {
+                int timer = tag.getInt("reloadTimer");
+                timer--;
+                tag.putInt("reloadTimer", timer);
+
+                if (timer <= 0) {
+                    Player player = (Player) entity;
+                    tag.putBoolean("loaded", true); // Reload complete
+                    tag.remove("reloadTimer");
+                    player.displayClientMessage(net.minecraft.network.chat.Component.literal("Reloaded !"), true);
+                }
+            }
+        }
+    }
 
     @Override
     public int getUseDuration(ItemStack stack) {
@@ -29,61 +65,5 @@ public class ArquebusItem extends Item {
             }
         }
         return false;
-    }
-
-    public static void useBufferSet(Player player, InteractionHand hand){
-        if (player.getItemInHand(hand).getOrCreateTag().getBoolean("loaded")){
-            useBuffer = 1;
-        }
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
-        ItemStack held = player.getItemInHand(hand);
-
-        if (held.getItem() instanceof ArquebusItem){
-            System.out.println("yup, that's a gun");
-            if (held.getOrCreateTag().getBoolean("loaded")){
-                held.getOrCreateTag().putBoolean("loaded", false);
-                System.out.println("BANG");
-                return InteractionResultHolder.pass(held);
-            } else {
-                if (ammoCheck(player)){
-                    System.out.println("Ammo found");
-                    if (player.getUseItemRemainingTicks() == 0) { // Check if use hasn't started
-                        player.startUsingItem(hand);
-                        //start sound and animation here ?
-                        player.stopUsingItem();
-                    }
-                    return InteractionResultHolder.pass(held);
-                } else {
-                    System.out.println("No ammo ?");
-                    return InteractionResultHolder.pass(held);
-                }
-            }
-        }
-
-        return InteractionResultHolder.pass(held);
-    }
-
-    @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity){
-        Player player = (Player) entity;
-        if (entity instanceof Player){
-
-            ItemStack held = player.getMainHandItem();
-            CompoundTag tag = held.getOrCreateTag();
-            tag.putBoolean("loaded", true);
-
-            for (int i = 1; i < player.getInventory().getContainerSize(); i++) {
-                if (ItemStack.isSameItem(player.getInventory().getItem(i), new ItemStack(ModItems.CARTRIDGE.get()))){
-                    player.getInventory().getItem(i).shrink(1);
-                }
-            }
-        }
-        //switch to loaded model
-        //play ready sound ?
-        System.out.println("Reloaded");
-        return stack;
     }
 }
