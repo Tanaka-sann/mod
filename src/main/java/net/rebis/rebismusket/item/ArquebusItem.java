@@ -46,7 +46,7 @@ public class ArquebusItem extends Item {
             if (player.getMainHandItem() == stack || player.getOffhandItem() == stack) {
                 CompoundTag tag = stack.getOrCreateTag();
                 if (tag.contains("reloadTimer")) {
-                    if (!ClientEventHandler.isMousePressed) { // Mouse released
+                    if (!ClientEventHandler.isMousePressed && ClientEventHandler.previousMousePressed) { // Mouse released
                         tag.remove("reloadTimer"); // Cancel reload
                         System.out.println("cancelled reload");
                     } else {
