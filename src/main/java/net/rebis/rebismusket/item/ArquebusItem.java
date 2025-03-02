@@ -36,6 +36,9 @@ public class ArquebusItem extends Item {
             System.out.println("yup, that's a gun");
             if (ammoCheck(player)){
                 System.out.println("Ammo found");
+                if (player.getUseItemRemainingTicks() == 0) { // Check if use hasn't started
+                    player.startUsingItem(hand);
+                }
             } else {
                 System.out.println("No ammo ?");
             }
@@ -46,6 +49,7 @@ public class ArquebusItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity){
+        System.out.println("Stopped holding ");
         if (entity instanceof Player){
             Player player = (Player) entity;
             int useTime = stack.getUseDuration() - player.getUseItemRemainingTicks();
