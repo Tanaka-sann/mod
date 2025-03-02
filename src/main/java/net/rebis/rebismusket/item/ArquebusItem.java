@@ -1,5 +1,6 @@
 package net.rebis.rebismusket.item;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +17,7 @@ public class ArquebusItem extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack) {
-        return 60; // (20 ticks per second)
+        return 40; // (20 ticks per second)
     }
 
     public static boolean ammoCheck(Player player){
@@ -34,13 +35,19 @@ public class ArquebusItem extends Item {
 
         if (held.getItem() instanceof ArquebusItem){
             System.out.println("yup, that's a gun");
-            if (ammoCheck(player)){
-                System.out.println("Ammo found");
-                if (player.getUseItemRemainingTicks() == 0) { // Check if use hasn't started
-                    player.startUsingItem(hand);
-                }
+            if (held.getOrCreateTag().getBoolean("loaded")){
+                held.getOrCreateTag().putBoolean("loaded", false);
+                System.out.println("BANG");
             } else {
-                System.out.println("No ammo ?");
+                if (ammoCheck(player)){
+                    System.out.println("Ammo found");
+                    if (player.getUseItemRemainingTicks() == 0) { // Check if use hasn't started
+                        player.startUsingItem(hand);
+                        //start sound and animation here ?
+                    }
+                } else {
+                    System.out.println("No ammo ?");
+                }
             }
         }
 
@@ -49,16 +56,21 @@ public class ArquebusItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity){
+        if (entity instanceof Player){
+            Player player = (Player) entity;
+            ItemStack held = player.getMainHandItem();
+            CompoundTag tag = held.getOrCreateTag();
+            tag.putBoolean("loaded", true);
+
+            for (int i = 1; i < player.getInventory().getContainerSize(); i++) {
+                if (ItemStack.isSameItem(player.getInventory().getItem(i), new ItemStack(ModItems.CARTRIDGE.get()))){
+                    player.getInventory().getItem(i).shrink(1);
+                }
+            }
+        }
+        //switch to loaded model
+        //play ready sound ?
         System.out.println("Reloaded");
-        //if (entity instanceof Player){
-          //  Player player = (Player) entity;
-            //int useTime = stack.getUseDuration() - player.getUseItemRemainingTicks();
-            //if (useTime >= stack.getUseDuration()) {
-              //  System.out.println("Held 3 seconds !");
-            //} else {
-              //  System.out.println("Released too early :/");
-            //}
-        //}
         return stack;
     }
 }
