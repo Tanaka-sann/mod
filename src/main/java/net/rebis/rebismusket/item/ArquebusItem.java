@@ -49,16 +49,16 @@ public class ArquebusItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity){
-        System.out.println("Stopped holding ");
-        if (entity instanceof Player){
-            Player player = (Player) entity;
-            int useTime = stack.getUseDuration() - player.getUseItemRemainingTicks();
-            if (useTime >= stack.getUseDuration()) {
-                System.out.println("Held 3 seconds !");
-            } else {
-                System.out.println("Released too early :/");
-            }
-        }
+        System.out.println("Reloaded");
+        //if (entity instanceof Player){
+          //  Player player = (Player) entity;
+            //int useTime = stack.getUseDuration() - player.getUseItemRemainingTicks();
+            //if (useTime >= stack.getUseDuration()) {
+              //  System.out.println("Held 3 seconds !");
+            //} else {
+              //  System.out.println("Released too early :/");
+            //}
+        //}
         return stack;
     }
 }
