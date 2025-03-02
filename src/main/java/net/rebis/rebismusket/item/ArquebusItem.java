@@ -27,6 +27,8 @@ public class ArquebusItem extends Item {
     }
 
     public void handleReload(Player player, ItemStack stack, Level world) {
+        System.out.println("Reloading ItemStack: " + stack); // Debug print
+
         if (ModKeyBindings.reloadKey.isDown()) {
             CompoundTag tag = stack.getOrCreateTag();
             if (!tag.contains("loaded")) {
