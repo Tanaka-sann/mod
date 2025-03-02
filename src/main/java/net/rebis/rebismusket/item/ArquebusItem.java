@@ -24,8 +24,10 @@ public class ArquebusItem extends Item {
 
         if (held.getItem() instanceof ArquebusItem && !tag.getBoolean("loaded")) {
             if (ammoCheck(player)) {
-                tag.putBoolean("loaded", false); // Start reload
-                tag.putInt("reloadTimer", RELOAD_TIME);
+                if (!tag.contains("reloadTimer")) {
+                    tag.putBoolean("loaded", false); // Start reload
+                    tag.putInt("reloadTimer", RELOAD_TIME);
+                }
             } else {
                 System.out.println("No ammo ?");
             }
@@ -36,18 +38,20 @@ public class ArquebusItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, Level world, net.minecraft.world.entity.Entity entity, int slotId, boolean isSelected) {
-        if (entity instanceof Player) {
-            CompoundTag tag = stack.getOrCreateTag();
-            if (!tag.getBoolean("loaded") && tag.contains("reloadTimer")) {
-                int timer = tag.getInt("reloadTimer");
-                timer--;
-                tag.putInt("reloadTimer", timer);
+        if (entity instanceof Player player) { // Simplified casting
+            if (player.getMainHandItem() == stack || player.getOffhandItem() == stack) { // Check active hand
+                CompoundTag tag = stack.getOrCreateTag();
+                if (!tag.getBoolean("loaded") && tag.contains("reloadTimer")) {
+                    int timer = tag.getInt("reloadTimer");
+                    timer--;
+                    tag.putInt("reloadTimer", timer);
 
-                if (timer <= 0) {
-                    Player player = (Player) entity;
-                    tag.putBoolean("loaded", true); // Reload complete
-                    tag.remove("reloadTimer");
-                    player.displayClientMessage(net.minecraft.network.chat.Component.literal("Reloaded !"), true);
+                    if (timer <= 0) {
+                        tag.putBoolean("loaded", true); // Reload complete
+                        tag.remove("reloadTimer");
+                        player.displayClientMessage(net.minecraft.network.chat.Component.literal("Reloaded !"), true);
+                        useAmmo(player);
+                    }
                 }
             }
         }
@@ -65,5 +69,13 @@ public class ArquebusItem extends Item {
             }
         }
         return false;
+    }
+
+    public static void useAmmo(Player player){
+        for (int i = 1; i < player.getInventory().getContainerSize(); i++) {
+            if (ItemStack.isSameItem(player.getInventory().getItem(i), new ItemStack(ModItems.CARTRIDGE.get()))){
+                player.getInventory().getItem(i).shrink(1);
+            }
+        }
     }
 }
