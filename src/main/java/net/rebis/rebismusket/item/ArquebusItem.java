@@ -27,11 +27,9 @@ public class ArquebusItem extends Item {
     }
 
     public void handleReload(Player player, ItemStack stack, Level world) {
-
         if (ModKeyBindings.reloadKey.isDown()) {
             CompoundTag tag = stack.getOrCreateTag();
-
-            if (!tag.getBoolean("loaded")) {
+            if (!tag.contains("loaded")) {
                 if (ItemStack.isSameItem(player.getMainHandItem(), new ItemStack(ModItems.ARQUEBUS.get()))
                         || ItemStack.isSameItem(player.getOffhandItem(), new ItemStack(ModItems.ARQUEBUS.get()))) {
                     for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
@@ -42,7 +40,7 @@ public class ArquebusItem extends Item {
                             if (world.isClientSide()) {
                                 player.displayClientMessage(net.minecraft.network.chat.Component.literal("loaded !"), true);
                             }
-                            return;
+                            return; //Return here!
                         }
                     }
                     if (world.isClientSide()) {
@@ -59,9 +57,15 @@ public class ArquebusItem extends Item {
             Player player = (Player) entity;
             ItemStack mainHandStack = player.getMainHandItem();
             ItemStack offHandStack = player.getOffhandItem();
+            CompoundTag tag = stack.getOrCreateTag(); // Get the NBT tag here
 
-            if (ItemStack.isSameItem(mainHandStack, new ItemStack(ModItems.ARQUEBUS.get()))
-                    || ItemStack.isSameItem(offHandStack,new ItemStack(ModItems.ARQUEBUS.get()))) {
+            System.out.println("Inventory tick: " + stack);
+            System.out.println("Main hand: " + mainHandStack);
+            System.out.println("Off hand: " + offHandStack);
+            System.out.println("Stack NBT: " + tag); // Print the NBT data
+
+            if (ItemStack.isSameItem(stack, mainHandStack) || ItemStack.isSameItem(stack, offHandStack)) {
+                System.out.println("Reloading");
                 handleReload(player, stack, world);
             }
         }
