@@ -24,8 +24,11 @@ public class ArquebusItem extends Item {
 
         if (held.getItem() instanceof ArquebusItem && !tag.getBoolean("loaded")) {
             if (ammoCheck(player)) {
-                if (!tag.contains("reloadTimer")) {
-                    tag.putBoolean("loaded", false); // Start reload
+                if (tag.contains("reloadTimer")) {
+                    tag.remove("reloadTimer"); // Cancel reload on right-click release
+                    return InteractionResultHolder.pass(held); // Stop further processing
+                } else {
+                    tag.putBoolean("loaded", false);
                     tag.putInt("reloadTimer", RELOAD_TIME);
                 }
             } else {
@@ -38,8 +41,8 @@ public class ArquebusItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, Level world, net.minecraft.world.entity.Entity entity, int slotId, boolean isSelected) {
-        if (entity instanceof Player player) { // Simplified casting
-            if (player.getMainHandItem() == stack || player.getOffhandItem() == stack) { // Check active hand
+        if (entity instanceof Player player) {
+            if (player.getMainHandItem() == stack || player.getOffhandItem() == stack) { //check active hand
                 CompoundTag tag = stack.getOrCreateTag();
                 if (!tag.getBoolean("loaded") && tag.contains("reloadTimer")) {
                     int timer = tag.getInt("reloadTimer");
