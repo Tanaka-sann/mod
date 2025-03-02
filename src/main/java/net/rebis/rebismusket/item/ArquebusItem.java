@@ -8,14 +8,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.rebis.rebismusket.ClientEventHandler;
 
 public class ArquebusItem extends Item {
 
     public ArquebusItem() {
         super(new Item.Properties().defaultDurability(250));
     }
-
-    private boolean isMousePressed = false;
 
     private static final int RELOAD_TIME = 60; // 3 seconds (20 ticks per second)
 
@@ -32,7 +31,6 @@ public class ArquebusItem extends Item {
                 } else {
                     tag.putBoolean("loaded", false);
                     tag.putInt("reloadTimer", RELOAD_TIME);
-                    isMousePressed = true; // Mouse pressed
                 }
             } else {
                 System.out.println("No ammo ?");
@@ -48,8 +46,9 @@ public class ArquebusItem extends Item {
             if (player.getMainHandItem() == stack || player.getOffhandItem() == stack) {
                 CompoundTag tag = stack.getOrCreateTag();
                 if (tag.contains("reloadTimer")) {
-                    if (!isMousePressed) { // Mouse released
+                    if (!ClientEventHandler.isMousePressed) { // Mouse released
                         tag.remove("reloadTimer"); // Cancel reload
+                        System.out.println("cancelled reload");
                     } else {
                         int timer = tag.getInt("reloadTimer");
                         timer--;
