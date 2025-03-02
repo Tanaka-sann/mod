@@ -15,6 +15,8 @@ public class ArquebusItem extends Item {
         super(new Item.Properties().defaultDurability(250));
     }
 
+    static int useBuffer = 0;
+
     @Override
     public int getUseDuration(ItemStack stack) {
         return 40; // (20 ticks per second)
@@ -27,6 +29,12 @@ public class ArquebusItem extends Item {
             }
         }
         return false;
+    }
+
+    public static void useBufferSet(Player player, InteractionHand hand){
+        if (player.getItemInHand(hand).getOrCreateTag().getBoolean("loaded")){
+            useBuffer = 1;
+        }
     }
 
     @Override
@@ -45,8 +53,9 @@ public class ArquebusItem extends Item {
                     if (player.getUseItemRemainingTicks() == 0) { // Check if use hasn't started
                         player.startUsingItem(hand);
                         //start sound and animation here ?
-                        return InteractionResultHolder.pass(held);
+                        player.stopUsingItem();
                     }
+                    return InteractionResultHolder.pass(held);
                 } else {
                     System.out.println("No ammo ?");
                     return InteractionResultHolder.pass(held);
@@ -59,8 +68,9 @@ public class ArquebusItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity){
+        Player player = (Player) entity;
         if (entity instanceof Player){
-            Player player = (Player) entity;
+
             ItemStack held = player.getMainHandItem();
             CompoundTag tag = held.getOrCreateTag();
             tag.putBoolean("loaded", true);
