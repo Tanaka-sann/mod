@@ -28,26 +28,22 @@ public class ArquebusItem extends Item {
 
     public void handleReload(Player player, ItemStack stack, Level world) {
         System.out.println("Reloading ItemStack: " + stack); // Debug print
-
         if (ModKeyBindings.reloadKey.isDown()) {
             CompoundTag tag = stack.getOrCreateTag();
             if (!tag.contains("loaded")) {
-                if (ItemStack.isSameItem(player.getMainHandItem(), new ItemStack(ModItems.ARQUEBUS.get()))
-                        || ItemStack.isSameItem(player.getOffhandItem(), new ItemStack(ModItems.ARQUEBUS.get()))) {
-                    for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                        ItemStack inventoryStack = player.getInventory().getItem(i);
-                        if (ItemStack.isSameItem(inventoryStack, new ItemStack(ModItems.CARTRIDGE.get()))) {
-                            player.getInventory().removeItem(i, 1);
-                            tag.putBoolean("loaded", true);
-                            if (world.isClientSide()) {
-                                player.displayClientMessage(net.minecraft.network.chat.Component.literal("loaded !"), true);
-                            }
-                            return; //Return here!
+                for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                    ItemStack inventoryStack = player.getInventory().getItem(i);
+                    if (ItemStack.isSameItem(inventoryStack, new ItemStack(ModItems.CARTRIDGE.get()))) {
+                        player.getInventory().removeItem(i, 1);
+                        tag.putBoolean("loaded", true);
+                        if (world.isClientSide()) {
+                            player.displayClientMessage(net.minecraft.network.chat.Component.literal("loaded !"), true);
                         }
+                        return;
                     }
-                    if (world.isClientSide()) {
-                        player.displayClientMessage(net.minecraft.network.chat.Component.literal(":("), true);
-                    }
+                }
+                if (world.isClientSide()) {
+                    player.displayClientMessage(net.minecraft.network.chat.Component.literal(":("), true);
                 }
             }
         }
