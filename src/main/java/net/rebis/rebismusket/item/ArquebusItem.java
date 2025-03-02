@@ -50,9 +50,9 @@ public class ArquebusItem extends Item {
             Player player = (Player) entity;
             int useTime = stack.getUseDuration() - player.getUseItemRemainingTicks();
             if (useTime >= stack.getUseDuration()) {
-                player.displayClientMessage(net.minecraft.network.chat.Component.literal("Held for 3 seconds!"), true);
+                System.out.println("Held 3 seconds !");
             } else {
-                player.displayClientMessage(net.minecraft.network.chat.Component.literal("Released too early!"), true);
+                System.out.println("Released too early :/");
             }
         }
         return stack;
