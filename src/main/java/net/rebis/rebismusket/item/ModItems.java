@@ -23,7 +23,8 @@ public class ModItems {
     public static final RegistryObject<Item> TIN_NUGGET = ITEMS.register("tin_nugget",
             () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> ARQUEBUS = ITEMS.register("arquebus", ArquebusItem::new);
+    public static final RegistryObject<Item> ARQUEBUS = ITEMS.register("arquebus",
+            () -> new ArquebusItem(new Item.Properties()));
 
     public static final RegistryObject<Item> MUSKET = ITEMS.register("musket",
             () -> new Item(new Item.Properties()));
