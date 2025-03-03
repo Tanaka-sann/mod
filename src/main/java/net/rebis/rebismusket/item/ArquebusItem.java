@@ -1,6 +1,7 @@
 package net.rebis.rebismusket.item;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.rebis.rebismusket.RebisMusket;
 
 public class ArquebusItem extends Item {
 
@@ -90,6 +92,16 @@ public class ArquebusItem extends Item {
             if (ItemStack.isSameItem(player.getInventory().getItem(i), new ItemStack(ModItems.CARTRIDGE.get()))){
                 player.getInventory().getItem(i).shrink(1);
             }
+        }
+    }
+
+    @Override
+    public ResourceLocation getModelResourceLocation(ItemStack stack, Level world, net.minecraft.world.entity.LivingEntity entity, int slotId) {
+        CompoundTag tag = stack.getOrCreateTag();
+        if (tag.getBoolean("loaded")) {
+            return new ResourceLocation(RebisMusket.MOD_ID, "item/arquebus_cocked");
+        } else {
+            return new ResourceLocation(RebisMusket.MOD_ID, "item/arquebus");
         }
     }
 }
