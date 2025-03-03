@@ -5,6 +5,14 @@
 		"0": "rebismusket:item/arquebus",
 		"particle": "arquebus"
 	},
+	"overrides": [
+		{
+			"predicate": {
+				"rebismusket:loaded": 1.0
+			},
+			"model": "rebismusket:item/arquebus_cocked"
+		}
+	],
 	"elements": [
 		{
 			"name": "barrel stock",

@@ -1,5 +1,6 @@
 package net.rebis.rebismusket.item;
 
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -15,6 +16,11 @@ public class ArquebusItem extends Item {
 
     public ArquebusItem() {
         super(new Item.Properties().defaultDurability(250));
+        ItemProperties.register(this, new ResourceLocation(RebisMusket.MOD_ID, "loaded"),
+                (itemStack, clientWorld, livingEntity, seed) -> {
+                    CompoundTag tag = itemStack.getTag();
+                    return (tag != null && tag.getBoolean("loaded")) ? 1.0F : 0.0F;
+                });
     }
 
     private boolean isMousePressed = false;
@@ -92,16 +98,6 @@ public class ArquebusItem extends Item {
             if (ItemStack.isSameItem(player.getInventory().getItem(i), new ItemStack(ModItems.CARTRIDGE.get()))){
                 player.getInventory().getItem(i).shrink(1);
             }
-        }
-    }
-
-    @Override
-    public ResourceLocation getModelResourceLocation(ItemStack stack, Level world, net.minecraft.world.entity.LivingEntity entity, int slotId) {
-        CompoundTag tag = stack.getOrCreateTag();
-        if (tag.getBoolean("loaded")) {
-            return new ResourceLocation(RebisMusket.MOD_ID, "item/arquebus_cocked");
-        } else {
-            return new ResourceLocation(RebisMusket.MOD_ID, "item/arquebus");
         }
     }
 }
