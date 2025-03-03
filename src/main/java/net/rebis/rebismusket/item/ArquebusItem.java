@@ -62,6 +62,7 @@ public class ArquebusItem extends Item {
                             tag.putBoolean("loaded", true);
                             tag.remove("reloadTimer");
                             player.displayClientMessage(net.minecraft.network.chat.Component.literal("Reloaded !"), true);
+                            useAmmo(player);
                             ClientEventHandler.isReloading = false; // Reset reload flag
                             System.out.println("loaded");
                         }
