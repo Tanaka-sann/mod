@@ -1,0 +1,12 @@
+{
+  "ration_use": {
+    "sounds": [
+      "rebismusket:item/unpacking"
+    ]
+  },
+  "ration_use_all": {
+    "sounds": [
+      "rebismusket:item/unpacking_all"
+    ]
+  }
+}

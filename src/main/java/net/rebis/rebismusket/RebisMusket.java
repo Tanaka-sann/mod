@@ -33,6 +33,7 @@ public class RebisMusket
 
         ModCreativeModTabs.register(modEventBus);
         ModItems.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

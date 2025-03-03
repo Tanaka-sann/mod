@@ -38,7 +38,7 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> PACK_OF_RATIONS = ITEMS.register("pack_of_rations",
-            () -> new Item(new Item.Properties()));
+            PackOfRationsItem::new);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
