@@ -47,10 +47,9 @@ public class ArquebusItem extends Item {
         if (entity instanceof Player player) {
             if (player.getMainHandItem() == stack || player.getOffhandItem() == stack) {
                 CompoundTag tag = stack.getOrCreateTag();
-                if (tag.contains("reloadTimer")) {
-                    if (!ClientEventHandler.isMousePressed && ClientEventHandler.isReloading) {
+                if (tag != null && tag.contains("reloadTimer")) {
+                    if (!ClientEventHandler.isMousePressed) {
                         tag.remove("reloadTimer");
-                        ClientEventHandler.isReloading = false;
                         System.out.println("Reload canceled");
                     } else {
                         int timer = tag.getInt("reloadTimer");
@@ -62,19 +61,20 @@ public class ArquebusItem extends Item {
                             tag.putBoolean("loaded", true);
                             tag.remove("reloadTimer");
                             player.displayClientMessage(net.minecraft.network.chat.Component.literal("Reloaded !"), true);
-                            ClientEventHandler.isReloading = false;
                             System.out.println("Reloaded");
                             useAmmo(player);
                         }
                     }
                 }
             } else {
-                stack.getOrCreateTag().remove("reloadTimer");
-                ClientEventHandler.isReloading = false;
+                if(stack.getOrCreateTag() != null) {
+                    stack.getOrCreateTag().remove("reloadTimer");
+                }
             }
         } else {
-            stack.getOrCreateTag().remove("reloadTimer");
-            ClientEventHandler.isReloading = false;
+            if(stack.getOrCreateTag() != null) {
+                stack.getOrCreateTag().remove("reloadTimer");
+            }
         }
     }
 
