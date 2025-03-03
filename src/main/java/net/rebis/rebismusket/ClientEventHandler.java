@@ -11,6 +11,9 @@ public class ClientEventHandler {
     public static void onMouseInput(InputEvent.MouseButton.Post event) {
         if (event.getButton() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
             isMousePressed = event.getAction() == org.lwjgl.glfw.GLFW.GLFW_PRESS;
+            if (!isMousePressed){
+                isReloading = false;
+            }
         }
     }
 }
