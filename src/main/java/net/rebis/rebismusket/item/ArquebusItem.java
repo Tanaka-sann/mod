@@ -8,13 +8,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.rebis.rebismusket.ClientEventHandler;
 
 public class ArquebusItem extends Item {
 
     public ArquebusItem() {
         super(new Item.Properties().defaultDurability(250));
     }
+
+    private boolean isMousePressed = false;
 
     private static final int RELOAD_TIME = 60; // 3 seconds (20 ticks per second)
 
@@ -27,12 +28,11 @@ public class ArquebusItem extends Item {
             if (ammoCheck(player)) {
                 if (tag.contains("reloadTimer")) {
                     tag.remove("reloadTimer"); // Cancel reload on right-click release
-                    ClientEventHandler.isReloading = false; // Reset reload flag
                     return InteractionResultHolder.pass(held); // Stop further processing
                 } else {
                     tag.putBoolean("loaded", false);
                     tag.putInt("reloadTimer", RELOAD_TIME);
-                    ClientEventHandler.isReloading = true; // Reloading started
+                    isMousePressed = true; // Mouse pressed
                 }
             } else {
                 System.out.println("No ammo ?");
@@ -47,34 +47,27 @@ public class ArquebusItem extends Item {
         if (entity instanceof Player player) {
             if (player.getMainHandItem() == stack || player.getOffhandItem() == stack) {
                 CompoundTag tag = stack.getOrCreateTag();
-                if (tag != null && tag.contains("reloadTimer")) {
-                    if (!ClientEventHandler.isMousePressed) {
-                        tag.remove("reloadTimer");
-                        System.out.println("Reload canceled");
+                if (tag.contains("reloadTimer")) {
+                    if (!isMousePressed) { // Mouse released
+                        tag.remove("reloadTimer"); // Cancel reload
                     } else {
                         int timer = tag.getInt("reloadTimer");
                         timer--;
                         tag.putInt("reloadTimer", timer);
-                        System.out.println(timer);
 
                         if (timer <= 0) {
                             tag.putBoolean("loaded", true);
                             tag.remove("reloadTimer");
                             player.displayClientMessage(net.minecraft.network.chat.Component.literal("Reloaded !"), true);
-                            System.out.println("Reloaded");
                             useAmmo(player);
                         }
                     }
                 }
             } else {
-                if(stack.getOrCreateTag() != null) {
-                    stack.getOrCreateTag().remove("reloadTimer");
-                }
-            }
-        } else {
-            if(stack.getOrCreateTag() != null) {
                 stack.getOrCreateTag().remove("reloadTimer");
             }
+        } else {
+            stack.getOrCreateTag().remove("reloadTimer");
         }
     }
 
